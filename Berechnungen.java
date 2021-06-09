@@ -27,7 +27,7 @@ class class1
     //Class array
     private Pixelclass[][] pixel = new Pixelclass[xlength1_2][ylength1_2];
 
-
+    private Tmpwerte tmp_hue = new Tmpwerte();
 
     /**
      * 
@@ -165,7 +165,7 @@ class class1
     {
         if(isLeftPictue)
         {
-            tmphue; //Left
+            ; //Left
         }
         else
         {
