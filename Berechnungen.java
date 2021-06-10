@@ -202,7 +202,7 @@ class class1
             pixel[x][y].setValue_right(pixel[x][y].getH_r());
         }
         
-    }//metho
+    }//method
 
 
 
