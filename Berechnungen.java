@@ -79,7 +79,7 @@ class class1
         //STARTEN DES ALGORYTHMUS
         getDistanzmap();
 
-        System.out.println("Distanz von Pixel (0|0): "+pixel[70][740].getDistance()); //nur debug, array pixel[][] muss als bild ausgegeben werden
+        System.out.println("Distanz von Pixel (0|0): "+pixel[102][23].getDistance()); //nur debug, array pixel[][] muss als bild ausgegeben werden
 
 
 
