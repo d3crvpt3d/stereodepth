@@ -1,7 +1,9 @@
-import java.io.*;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.awt.*;
+import java.awt.Graphics2D;
+import java.awt.Color;
+import java.io.File;
+import java.io.IOException;
 
 class class1
 {
@@ -37,6 +39,9 @@ class class1
     //Class array
     private Pixelclass[][] pixel = new Pixelclass[xlength1_2][ylength1_2];
 
+    BufferedImage output = new BufferedImage(xlength1_2, ylength1_2, BufferedImage.TYPE_INT_RGB);
+
+    Graphics2D g2d = output.createGraphics();
     
 
     /**
@@ -54,8 +59,9 @@ class class1
 
     /**
      * Constructor 
+     * @throws IOException
      */
-    public class1()
+    public class1() throws IOException
     {
         try {
         File input_left = new File("picture_left.jpeg");
@@ -80,7 +86,9 @@ class class1
         getDistanzmap();
 
         System.out.println("Distanz von Pixel (0|0): "+pixel[102][23].getDistance()); //nur debug, array pixel[][] muss als bild ausgegeben werden
-
+        
+        //Output File
+        setOutput();
 
 
         //end Timer
@@ -130,12 +138,12 @@ class class1
     public int getRechtenPixel(int x_input, int y_input)
     {
 
-        int myNumber = pixel[x_input][y_input].getValue_left();
-        int distance = Math.abs(pixel[0][y_input].getValue_right() - myNumber);
+        float myNumber = pixel[x_input][y_input].getValue_left();
+        float distance = Math.abs(pixel[0][y_input].getValue_right() - myNumber);
         int idx = 0;
         for(int c = 1; c < pixel.length; c++)
         {
-             int cdistance = Math.abs(pixel[c][y_input].getValue_right() - myNumber);
+            float cdistance = Math.abs(pixel[c][y_input].getValue_right() - myNumber);
              if(cdistance < distance)
              {
                 idx = c;
@@ -151,7 +159,7 @@ class class1
     /**
      * Ausrechnen des Z wertes  !DONE
      */
-    public double getDistanz(int xkoord1, int xkoord2)
+    public float getDistanz(int xkoord1, int xkoord2)
     {
         gamma1_2 = 90 - FOVH1_2 / 2; // berechnung von gamma für den x-Wert der linken und rechten Kamera
         System.out.println("gamma1_2 "+gamma1_2);
@@ -171,7 +179,7 @@ class class1
 
         Z = f1_2 * T / d; // berechnung der Distanz zum aufgenommenen Objekt in cm
 
-        return Z; // gebe distanz zum objekt aus
+        return (float)Z; // gebe distanz zum objekt aus
     }//method
 
 
@@ -184,14 +192,41 @@ class class1
         if(isLeftPictue)
         {
             Color c_l = new Color(image_left.getRGB(x, y)); //Left
-            pixel[x][y].setValue_left( c_l.getRed() + c_l.getGreen() * 1000 + c_l.getBlue() * 1000000 ); //Setzt bei dem value des pixels wert von xxx(red)xxx(green)xxx(blue) ein
+            pixel[x][y].setHsb_l(Color.RGBtoHSB(c_l.getRed(), c_l.getGreen(), c_l.getBlue(), null));
+            pixel[x][y].setValue_left(pixel[x][y].getH_l());
         }
         else
         {
             Color c_r = new Color(image_right.getRGB(x, y)); //Right
-            pixel[x][y].setValue_right( c_r.getRed() + c_r.getGreen() * 1000 + c_r.getBlue() * 1000000 ); //Setzt bei dem value des pixels wert von xxx(red)xxx(green)xxx(blue) ein
+            pixel[x][y].setHsb_r(Color.RGBtoHSB(c_r.getRed(), c_r.getGreen(), c_r.getBlue(), null));
+            pixel[x][y].setValue_right(pixel[x][y].getH_r());
         }
         
     }//method
+
+
+
+    /**
+     * Save a Image with the Values
+     * @throws IOException
+     */
+    public void setOutput() throws IOException
+    {
+        for(int x = 0; x < xlength1_2; x++)
+        {
+            for(int y = 0; y < ylength1_2; y++)
+            {
+                g2d.setColor(Color.getHSBColor(pixel[x][y].getDistance(), 1, 1));
+                g2d.drawLine(x, y, x, y);
+            }
+            
+        }
+        // Disposes of this graphics context and releases any system resources that it is using. 
+        g2d.dispose();
+
+        // Save as JPEG
+        File file = new File("output_file.jpg");
+        ImageIO.write(output, "jpg", file);
+    }
 
 }

@@ -4,13 +4,16 @@ public class Pixelclass
 
 
     //Var
-    private int value_left;
-    private int value_right;
+    private float value_left;
+    private float value_right;
     private int stelle;
-    private double distance;
+    private float distance;
 
     private int value_alt;
     private int value_alt2;
+
+    private float[] hsb_l = new float[3];
+    private float[] hsb_r = new float[3];
 
 
     //getMethods
@@ -20,15 +23,15 @@ public class Pixelclass
         return stelle;
     }
 
-    public int getValue_left() {
+    public float getValue_left() {
         return value_left;
     }
 
-    public int getValue_right() {
+    public float getValue_right() {
         return value_right;
     }
 
-    public double getDistance()
+    public float getDistance()
     
     {
         return distance;
@@ -46,12 +49,22 @@ public class Pixelclass
         return value_alt2;
     }
 
+    public float getH_l() {
+        return hsb_l[0];
+    }
+
+    public float getH_r() {
+        return hsb_r[0];
+    }
+
+
+
     //setMethods
-    public void setValue_left(int value_left) {
+    public void setValue_left(float value_left) {
         this.value_left = value_left;
     }
 
-    public void setValue_right(int value_right) {
+    public void setValue_right(float value_right) {
         this.value_right = value_right;
     }
 
@@ -61,7 +74,7 @@ public class Pixelclass
         this.stelle = stelle;
     }
 
-    public void setDistance(double distance)
+    public void setDistance(Float distance)
     {
 
         this.distance = distance;
@@ -79,7 +92,13 @@ public class Pixelclass
         this.value_alt2 = value_alt2;
     }
 
+    public void setHsb_l(float[] hsb_l) {
+        this.hsb_l = hsb_l;
+    }
 
+    public void setHsb_r(float[] hsb_r) {
+        this.hsb_r = hsb_r;
+    }
 
 
 
