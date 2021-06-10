@@ -9,14 +9,15 @@ class class1
     private double T = 14.7; // Abstand von der Mitte der beiden Kameras in cm
     // private String bildli = links.jpeg; // ausgegebener x-Wert der linken Kamera
     // private String bildre = rechts.jpeg; // ausgegebener x-Wert der rechten Kamera
-    private int xlength1_2 = 1600; // gesamtlänge der x achse der bilder der linken und rechten Kamera in pixel
-    private int ylength1_2 = 1200; // gesamtlänge der y achse der bilder der linken und rechten Kamera in pixel
+    private int xlength1_2 = 160; // gesamtlänge der x achse der bilder der linken und rechten Kamera in pixel
+    private int ylength1_2 = 120; // gesamtlänge der y achse der bilder der linken und rechten Kamera in pixel
     private double f1_2 = 2.7; // focal length für linke und rechte Kamera in cm
     private double FOVH1_2 = 62; // FOV horizontal für die linke und rechte Kamera
     //AUSFÜLLEN
 
 
 
+    //distanz
     private double xl; // abstand des pixels zur linken seite in cm für den x-Wert der linken kamera
     private double xr; // abstand des pixels zur linken seite in cm für den x-Wert der rechten kamera
 
@@ -78,7 +79,7 @@ class class1
         //STARTEN DES ALGORYTHMUS
         getDistanzmap();
 
-        System.out.println("Distanz von Pixel (0|0): "+pixel[0][0].getDistance()); //nur debug, array pixel[][] muss als bild ausgegeben werden
+        System.out.println("Distanz von Pixel (0|0): "+pixel[70][740].getDistance()); //nur debug, array pixel[][] muss als bild ausgegeben werden
 
 
 
@@ -106,7 +107,7 @@ class class1
         }//for1
     }//method
 
-
+    
     /**
      * Befüllt das array mit den werten und dem pixel (by PhiBr0)   !DONE
      */
