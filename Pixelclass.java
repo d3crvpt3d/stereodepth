@@ -13,7 +13,6 @@ public class Pixelclass
     private int value_alt2;
 
 
-
     //getMethods
     public int getStelle()
     {

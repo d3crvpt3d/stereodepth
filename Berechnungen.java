@@ -1,11 +1,16 @@
+import java.io.*;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.awt.*;
+
 class class1
 {
     //AUSFÜLLEN
     private double T = 14.7; // Abstand von der Mitte der beiden Kameras in cm
     // private String bildli = links.jpeg; // ausgegebener x-Wert der linken Kamera
     // private String bildre = rechts.jpeg; // ausgegebener x-Wert der rechten Kamera
-    private int xlength1_2 = 160; // gesamtlänge der x achse der bilder der linken und rechten Kamera in pixel
-    private int ylength1_2 = 90; // gesamtlänge der y achse der bilder der linken und rechten Kamera in pixel
+    private int xlength1_2 = 1600; // gesamtlänge der x achse der bilder der linken und rechten Kamera in pixel
+    private int ylength1_2 = 1200; // gesamtlänge der y achse der bilder der linken und rechten Kamera in pixel
     private double f1_2 = 2.7; // focal length für linke und rechte Kamera in cm
     private double FOVH1_2 = 62; // FOV horizontal für die linke und rechte Kamera
     //AUSFÜLLEN
@@ -24,21 +29,24 @@ class class1
 
     private double Z; // zu berechender z-Wert von 1/2 T aus
 
+    //Bufferedimage
+    BufferedImage image_left;
+    BufferedImage image_right;
+
     //Class array
     private Pixelclass[][] pixel = new Pixelclass[xlength1_2][ylength1_2];
 
-    private Tmpwerte tmp_hue = new Tmpwerte();
+    
 
     /**
      * 
      * @param args
      */
-    public static void main(String[] args)
+    public static void main(String[] args) throws Exception
     {
         System.out.println("Hello World!");
         new Pixelclass();
         new class1();
-        new Tmpwerte();
     }
 
    
@@ -48,6 +56,15 @@ class class1
      */
     public class1()
     {
+        try {
+        File input_left = new File("picture_left.jpeg");
+        File input_right = new File("picture_right.jpeg");
+        
+        image_left = ImageIO.read(input_left);
+        image_right = ImageIO.read(input_right);
+    
+        } catch (Exception e) {}
+        
         //start Timer
         double startTime = System.nanoTime();
 
@@ -159,17 +176,19 @@ class class1
 
 
     /**
-     * @return hue wert von dem aufgerufenen pixel  !TODO
+     * @return zusammengerechneter wert von dem aufgerufenen pixel  !DONE
      */
     public void getPixelvalue(int x, int y, boolean isLeftPictue)
     {
         if(isLeftPictue)
         {
-            ; //Left
+            Color c_l = new Color(image_left.getRGB(x, y)); //Left
+            pixel[x][y].setValue_left( c_l.getRed() + c_l.getGreen() * 1000 + c_l.getBlue() * 1000000 ); //Setzt bei dem value des pixels wert von xxx(red)xxx(green)xxx(blue) ein
         }
         else
         {
-            ; //Right
+            Color c_r = new Color(image_right.getRGB(x, y)); //Right
+            pixel[x][y].setValue_right( c_r.getRed() + c_r.getGreen() * 1000 + c_r.getBlue() * 1000000 ); //Setzt bei dem value des pixels wert von xxx(red)xxx(green)xxx(blue) ein
         }
         
     }//method
