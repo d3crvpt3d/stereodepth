@@ -15,6 +15,7 @@ class class1
     private int ylength1_2 = 120; // gesamtlänge der y achse der bilder der linken und rechten Kamera in pixel
     private double f1_2 = 2.7; // focal length für linke und rechte Kamera in cm
     private double FOVH1_2 = 62; // FOV horizontal für die linke und rechte Kamera
+    private int range = 500; //Maximale Distanz in cm
     //AUSFÜLLEN
 
 
@@ -216,7 +217,7 @@ class class1
         {
             for(int y = 0; y < ylength1_2; y++)
             {
-                g2d.setColor(Color.getHSBColor(pixel[x][y].getDistance(), 1, 1));
+                g2d.setColor(Color.getHSBColor( (pixel[x][y].getDistance()-0)/(range-0) * (1-0) + 0 , 1, 1)); //float von hue muss 0-1 sein mit einer maximalen Distanz von range
                 g2d.drawLine(x, y, x, y);
             }
             
