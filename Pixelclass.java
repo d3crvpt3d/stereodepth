@@ -57,7 +57,37 @@ public class Pixelclass
         return hsb_r[0];
     }
 
+    public float getHsb_l(int hsb)
+    {
+        if(hsb == 0)
+        {
+        return hsb_l[0];
+        }
+        else if(hsb == 1)
+        {
+            return hsb_l[1];
+        }
+        else
+        {
+            return hsb_l[2];
+        }
+    }
 
+    public float getHsb_r(int hsb)
+    {
+        if(hsb == 0)
+        {
+        return hsb_r[0];
+        }
+        else if(hsb == 1)
+        {
+            return hsb_r[1];
+        }
+        else
+        {
+            return hsb_r[2];
+        }
+    }
 
     //setMethods
     public void setValue_left(float value_left) {

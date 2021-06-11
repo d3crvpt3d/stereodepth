@@ -8,14 +8,13 @@ import java.io.IOException;
 class class1
 {
     //AUSFÜLLEN
-    private double T = 14.7; // Abstand von der Mitte der beiden Kameras in cm
-    // private String bildli = links.jpeg; // ausgegebener x-Wert der linken Kamera
-    // private String bildre = rechts.jpeg; // ausgegebener x-Wert der rechten Kamera
+    private double T = 5d; // Abstand von der Mitte der beiden Kameras in cm
     private int xlength1_2 = 160; // gesamtlänge der x achse der bilder der linken und rechten Kamera in pixel
     private int ylength1_2 = 120; // gesamtlänge der y achse der bilder der linken und rechten Kamera in pixel
     private double f1_2 = 2.7; // focal length für linke und rechte Kamera in cm
     private double FOVH1_2 = 62; // FOV horizontal für die linke und rechte Kamera
-    private int range = 500; //Maximale Distanz in cm
+    private int range = 100; //Maximale Distanz in cm
+    private int search_radius = xlength1_2 / 4;
     //AUSFÜLLEN
 
 
@@ -86,7 +85,7 @@ class class1
         //STARTEN DES ALGORYTHMUS
         getDistanzmap();
 
-        System.out.println("Distanz von Pixel (0|0): "+pixel[102][23].getDistance()); //nur debug, array pixel[][] muss als bild ausgegeben werden
+        System.out.println("Distanz von Pixel (100|100): "+pixel[100][100].getDistance()); //nur debug, array pixel[][] muss als bild ausgegeben werden
         
         //Output File
         setOutput();
@@ -125,7 +124,7 @@ class class1
         for(int x = 0; x < xlength1_2; x++){
             for(int y = 0; y < ylength1_2; y++){
               pixel[x][y] = new Pixelclass();
-              pixel[x][y].setStelle(x);
+              System.out.println("Befuellen: "+x); //DEBUG
               getPixelvalue(x, y, false);
             }//for2
           }//for1
@@ -139,20 +138,37 @@ class class1
     public int getRechtenPixel(int x_input, int y_input)
     {
 
-        float myNumber = pixel[x_input][y_input].getValue_left();
-        float distance = Math.abs(pixel[0][y_input].getValue_right() - myNumber);
+        float myNumber = pixel[x_input][y_input].getHsb_l(0) + pixel[x_input][y_input].getHsb_l(1) + pixel[x_input][y_input].getHsb_l(2);
+        float distance = Math.abs( pixel[0][y_input].getHsb_r(0) + pixel[0][y_input].getHsb_r(1) + pixel[0][y_input].getHsb_r(2) - myNumber);
         int idx = 0;
-        for(int c = 1; c < pixel.length; c++)
+        if(x_input >= search_radius)
         {
-            float cdistance = Math.abs(pixel[c][y_input].getValue_right() - myNumber);
-             if(cdistance < distance)
-             {
-                idx = c;
-                 distance = cdistance;
+            for(int c = x_input - search_radius; c < x_input; c++)
+            {
+                float cdistance = Math.abs( pixel[c][y_input].getHsb_r(0) + pixel[c][y_input].getHsb_r(1) + pixel[c][y_input].getHsb_r(2) - myNumber);
+                if(cdistance < distance)
+                {
+                    idx = c;
+                    distance = cdistance;
+                }
             }
+            System.out.println("DEBUG: "+idx);
+            return idx;
         }
-        System.out.println("DEBUG: "+idx);
-        return idx;
+        else
+        {
+            for(int c = 0; c < xlength1_2; c++)
+            {
+                float cdistance = Math.abs( pixel[c][y_input].getHsb_r(0) + pixel[c][y_input].getHsb_r(1) + pixel[c][y_input].getHsb_r(2) - myNumber);
+                if(cdistance < distance)
+                {
+                    idx = c;
+                    distance = cdistance;
+                }
+            }
+            System.out.println("DEBUG: "+idx);
+            return idx; // die ersten können nicht gefunden werden, da der pixel beim rechten bild links ausserhalb des bildes wäre
+        }
     }//method
 
 
@@ -213,9 +229,9 @@ class class1
      */
     public void setOutput() throws IOException
     {
-        for(int x = 0; x < xlength1_2; x++)
+        for(int y = 0; y < ylength1_2; y++)
         {
-            for(int y = 0; y < ylength1_2; y++)
+            for(int x = 0; x < xlength1_2; x++)
             {
                 g2d.setColor(Color.getHSBColor( (pixel[x][y].getDistance()-0)/(range-0) * (1-0) + 0 , 1, 1)); //float von hue muss 0-1 sein mit einer maximalen Distanz von range
                 g2d.drawLine(x, y, x, y);
